@@ -1,12 +1,14 @@
 # 💬 TalkSpace
 
 **TalkSpace** is a console-based two-user chat application written in **C++**, developed as part of the **Data Structure Lab**.  
-It allows two users to take turns **sending messages**, **view chat history**, **clear previous messages** and **exit** the chat using simple commands.
+It allows two users to take turns **sending messages**, **view chat history**, **clear previous messages**, and **exit** the chat using simple commands.
 
 This project is designed for beginners to practice **Data Structures and core programming concepts**.
 
 ---
+
 ## 🌟 Features
+
 - Two-user turn-based chat system
 - Stores messages using arrays
 - Displays complete chat history
@@ -15,3 +17,19 @@ This project is designed for beginners to practice **Data Structures and core pr
 - Simple and interactive console interface
 
 ---
+
+## 💻 Technologies Used
+
+- **Language:** C++
+- **Compiler:** GCC or any standard C++ compiler
+- **Interface:** Console (Text-based)
+
+---
+
+## 📂 Project Structure
+
+```plaintext
+TalkSpace/
+├── README.md
+├── Project-Documents
+├── TalkSpace.cpp
