@@ -20,7 +20,7 @@ void displayChatHistory(const string chatHistory[], int messageCount) {
 
 // Function to clear the chat history
 void clearChatHistory(int& messageCount) {
-    messageCount = 0; // Reset the message count to zero, effectively clearing the history
+    messageCount = 0; // Reset the message count
     cout << "Chat history has been cleared." << endl;
 }
 
@@ -28,12 +28,19 @@ int main() {
     string chatHistory[MAX_MESSAGES]; // Array to store chat messages
     int messageCount = 0; // Count of current messages
     string message;
-    string user1 = "User1";
-    string user2 = "User2";
+
+    // custom usernames
+    string user1, user2;
+    cout << "Enter name for User 1: ";
+    getline(cin, user1);
+    cout << "Enter name for User 2: ";
+    getline(cin, user2);
+
     string currentUser = user1; // Start with User1
 
     cout << " \n\t\t\t         TalkSpace" << endl;
     cout << "Commands: 'exit' to quit, 'clear' to clear chat history." << endl;
+
     while (true) {
         // Display chat history
         displayChatHistory(chatHistory, messageCount);
@@ -50,7 +57,6 @@ int main() {
         else if (message == "clear") {
             clearChatHistory(messageCount);
         }
-        //
         else {
             // Add the message to the chat history if there's space
             if (messageCount < MAX_MESSAGES) {
@@ -61,6 +67,7 @@ int main() {
                 break;
             }
 
+            // Switch to the other user
             currentUser = (currentUser == user1) ? user2 : user1;
         }
     }
