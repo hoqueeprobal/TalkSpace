@@ -1,32 +1,33 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-const int MAX_MESSAGES = 100;
-
 // Function to display the chat history
-void displayChatHistory(const string chatHistory[], int messageCount) {
+void displayChatHistory(const vector<string>& chatHistory) {
     cout << "\n--- Chat History ---" << endl;
-    if (messageCount == 0) {
+
+    if (chatHistory.empty()) {
         cout << "No messages yet." << endl;
     } else {
-        for (int i = 0; i < messageCount; i++) {
-            cout << chatHistory[i] << endl;
+        for (const string& msg : chatHistory) {
+            cout << msg << endl;
         }
     }
+
     cout << "--------------------" << endl;
 }
 
 // Function to clear the chat history
-void clearChatHistory(int& messageCount) {
-    messageCount = 0;
+void clearChatHistory(vector<string>& chatHistory) {
+    chatHistory.clear();
     cout << "Chat history has been cleared." << endl;
 }
 
 int main() {
-    string chatHistory[MAX_MESSAGES];
-    int messageCount = 0;
+     // Dynamic history
+    vector<string> chatHistory;  
     string message;
 
     // Custom usernames with duplicate prevention
@@ -35,7 +36,6 @@ int main() {
     cout << "Enter name for User 1: ";
     getline(cin, user1);
 
-    //  Prevent duplicate names
     while (true) {
         cout << "Enter name for User 2: ";
         getline(cin, user2);
@@ -43,7 +43,7 @@ int main() {
         if (user2 == user1) {
             cout << "Username already used! Please enter a different name.\n";
         } else {
-            break; // Valid username
+            break;
         }
     }
 
@@ -53,7 +53,7 @@ int main() {
     cout << "Commands: 'exit' to quit, 'clear' to clear chat history." << endl;
 
     while (true) {
-        displayChatHistory(chatHistory, messageCount);
+        displayChatHistory(chatHistory);
 
         cout << currentUser << ": ";
         getline(cin, message);
@@ -62,17 +62,10 @@ int main() {
             break;
         }
         else if (message == "clear") {
-            clearChatHistory(messageCount);
+            clearChatHistory(chatHistory);
         }
         else {
-            if (messageCount < MAX_MESSAGES) {
-                chatHistory[messageCount] = currentUser + ": " + message;
-                messageCount++;
-            } else {
-                cout << "Chat history is full. No more messages can be added." << endl;
-                break;
-            }
-
+            chatHistory.push_back(currentUser + ": " + message);
             currentUser = (currentUser == user1) ? user2 : user1;
         }
     }
