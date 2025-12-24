@@ -1,8 +1,31 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 using namespace std;
+
+const string FILE_NAME = "chat_history.txt";
+
+// Load chat history from file
+void loadChatHistory(vector<string>& chatHistory) {
+    ifstream file(FILE_NAME);
+    string line;
+
+    while (getline(file, line)) {
+        chatHistory.push_back(line);
+    }
+    file.close();
+}
+
+// Save chat history to file
+void saveChatHistory(const vector<string>& chatHistory) {
+    ofstream file(FILE_NAME);
+    for (const string& msg : chatHistory) {
+        file << msg << endl;
+    }
+    file.close();
+}
 
 // Display chat history
 void displayChatHistory(const vector<string>& chatHistory) {
@@ -15,14 +38,14 @@ void displayChatHistory(const vector<string>& chatHistory) {
             cout << msg << endl;
         }
     }
-
     cout << "--------------------" << endl;
 }
 
 // Clear chat history
 void clearChatHistory(vector<string>& chatHistory) {
     chatHistory.clear();
-    cout << "Chat history has been cleared." << endl;
+    saveChatHistory(chatHistory);
+    cout << "Chat history cleared." << endl;
 }
 
 // Search messages
@@ -44,11 +67,10 @@ void searchMessages(const vector<string>& chatHistory) {
     if (!found) {
         cout << "No matching messages found." << endl;
     }
-
     cout << "----------------------" << endl;
 }
 
-// Edit last message of current user
+// Edit last message
 void editLastMessage(vector<string>& chatHistory, const string& currentUser) {
     for (int i = chatHistory.size() - 1; i >= 0; i--) {
         if (chatHistory[i].find(currentUser + ": ") == 0) {
@@ -56,19 +78,21 @@ void editLastMessage(vector<string>& chatHistory, const string& currentUser) {
             cout << "Enter new message: ";
             getline(cin, newMsg);
             chatHistory[i] = currentUser + ": " + newMsg;
-            cout << "Message edited successfully." << endl;
+            saveChatHistory(chatHistory);
+            cout << "Message edited." << endl;
             return;
         }
     }
     cout << "No message found to edit." << endl;
 }
 
-// Delete last message of current user
+// Delete last message
 void deleteLastMessage(vector<string>& chatHistory, const string& currentUser) {
     for (int i = chatHistory.size() - 1; i >= 0; i--) {
         if (chatHistory[i].find(currentUser + ": ") == 0) {
             chatHistory.erase(chatHistory.begin() + i);
-            cout << "Message deleted successfully." << endl;
+            saveChatHistory(chatHistory);
+            cout << "Message deleted." << endl;
             return;
         }
     }
@@ -80,23 +104,22 @@ int main() {
     string message;
     string user1, user2;
 
+    // Load old messages
+    loadChatHistory(chatHistory);
+
     cout << "Enter name for User 1: ";
     getline(cin, user1);
 
     while (true) {
         cout << "Enter name for User 2: ";
         getline(cin, user2);
-
-        if (user2 == user1) {
-            cout << "Username already used! Please enter a different name.\n";
-        } else {
-            break;
-        }
+        if (user2 != user1) break;
+        cout << "Username already used.\n";
     }
 
     string currentUser = user1;
 
-    cout << "\n\t\t\t      TalkSpace" << endl;
+    cout << "\n\t\t\t TalkSpace (Persistent Chat)" << endl;
     cout << "Commands: exit | clear | edit | delete | search" << endl;
 
     while (true) {
@@ -122,6 +145,7 @@ int main() {
         }
         else {
             chatHistory.push_back(currentUser + ": " + message);
+            saveChatHistory(chatHistory);
             currentUser = (currentUser == user1) ? user2 : user1;
         }
     }
