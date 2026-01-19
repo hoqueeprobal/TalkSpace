@@ -119,7 +119,7 @@ int main() {
 
     string currentUser = user1;
 
-    cout << "\n\t\t\t TalkSpace (Persistent Chat)" << endl;
+    cout << "\n\t\t\t TalkSpace" << endl;
     cout << "Commands: exit | clear | edit | delete | search" << endl;
 
     while (true) {
